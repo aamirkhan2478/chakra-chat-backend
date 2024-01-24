@@ -30,10 +30,6 @@ const server = app.listen(PORT, console.log(`Server is running on ${PORT}`));
 
 //Setup socket.io
 const io = require("socket.io")(server, {
-  cors: {
-    origin: process.env.CLIENT_URL,
-    credentials: true,
-  },
   pingTimeout: 60000,
 });
 
