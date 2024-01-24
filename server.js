@@ -16,7 +16,7 @@ app.use(express.urlencoded({ limit: "30mb", extended: true }));
 require("./Database/connection");
 
 //Cors
-app.use(cors({ credentials: true, origin: "*" }));
+app.use(cors({ credentials: true, origin: process.env.CLIENT_URL }));
 
 //Routes
 app.use("/api/user", require("./routes/userRoutes"));
@@ -31,8 +31,7 @@ const server = app.listen(PORT, console.log(`Server is running on ${PORT}`));
 //Setup socket.io
 const io = require("socket.io")(server, {
   cors: {
-    allowedHeaders: ["*"],
-    origin: "*",
+    origin: process.env.CLIENT_URL,
     credentials: true,
   },
   pingTimeout: 60000,
