@@ -16,7 +16,7 @@ app.use(express.urlencoded({ limit: "30mb", extended: true }));
 require("./Database/connection");
 
 //Cors
-app.use(cors({ credentials: true, origin: process.env.CLIENT_URL }));
+app.use(cors());
 
 //Routes
 app.use("/api/user", require("./routes/userRoutes"));
