@@ -5,7 +5,7 @@ const dotenv = require("dotenv");
 const { notFound, errorHandler } = require("./Middleware/errors");
 
 //dotenv
-dotenv.config({ path: "./config.env" });
+dotenv.config({ path: ".env.local" });
 const PORT = process.env.PORT || 4000;
 
 //convert json form
