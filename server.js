@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const mainCors = require("cors");
 const dotenv = require("dotenv");
+const http = require("http");
 const { notFound, errorHandler } = require("./Middleware/errors");
 
 //dotenv
@@ -16,7 +17,7 @@ app.use(express.urlencoded({ limit: "30mb", extended: true }));
 require("./Database/connection");
 
 //Cors
-app.use(mainCors());
+app.use(mainCors({ origin: process.env.CLIENT_URL }));
 
 //Routes
 app.use("/api/user", require("./routes/userRoutes"));
@@ -25,17 +26,18 @@ app.use("/api/message", require("./routes/messageRoutes"));
 app.use(notFound);
 app.use(errorHandler);
 
+//Server
+const server = http.createServer(app);
+
 //Listening Port
-const server = app.listen(PORT, console.log(`Server is running on ${PORT}`));
+server.listen(PORT, console.log(`Server is running on ${PORT}`));
 
 //Setup socket.io
 const io = require("socket.io")(server, {
-  cors:{
-    origin: "*",
+  cors: {
+    origin: process.env.CLIENT_URL,
     methods: ["GET", "POST"],
-    credentials: true
   },
-  pingTimeout: 60000,
 });
 
 //Create new connection
