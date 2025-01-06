@@ -17,7 +17,7 @@ app.use(express.urlencoded({ limit: "30mb", extended: true }));
 require("./Database/connection");
 
 //Cors
-app.use(mainCors({ origin: process.env.CLIENT_URL }));
+app.use(mainCors({ origin: "*" }));
 
 //Routes
 app.use("/api/user", require("./routes/userRoutes"));
@@ -35,7 +35,7 @@ server.listen(PORT, console.log(`Server is running on ${PORT}`));
 //Setup socket.io
 const io = require("socket.io")(server, {
   cors: {
-    origin: process.env.CLIENT_URL,
+    origin: "*",
     methods: ["GET", "POST"],
   },
 });
