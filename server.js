@@ -4,6 +4,7 @@ const mainCors = require("cors");
 const dotenv = require("dotenv");
 const http = require("http");
 const { notFound, errorHandler } = require("./Middleware/errors");
+const { Server } = require("socket.io");
 
 //dotenv
 dotenv.config({ path: ".env.local" });
@@ -17,7 +18,7 @@ app.use(express.urlencoded({ limit: "30mb", extended: true }));
 require("./Database/connection");
 
 //Cors
-app.use(mainCors({ origin: "*" }));
+app.use(mainCors({ origin: "*", credentials: true }));
 
 //Routes
 app.use("/api/user", require("./routes/userRoutes"));
@@ -29,16 +30,19 @@ app.use(errorHandler);
 //Server
 const server = http.createServer(app);
 
-//Listening Port
-server.listen(PORT, console.log(`Server is running on ${PORT}`));
-
 //Setup socket.io
-const io = require("socket.io")(server, {
+const io = new Server(server, {
   cors: {
     origin: "*",
     methods: ["GET", "POST"],
   },
 });
+
+//Listening Port
+server.listen(
+  PORT,
+  console.log(`Server is running on http://localhost:${PORT}`)
+);
 
 //Create new connection
 io.on("connection", (socket) => {
