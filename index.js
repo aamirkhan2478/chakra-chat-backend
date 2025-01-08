@@ -48,7 +48,7 @@ app.use(errorHandler);
 
 //Create new connection
 io.on("connection", (socket) => {
-  console.log("Connected to socket.io");
+  console.log(`Connected to socket.io ${socket.id}`);
 
   // This is a socket.io event listener that listens for the "setup" event.
   // When it hears the "setup" event, it joins the socket to a room with the
