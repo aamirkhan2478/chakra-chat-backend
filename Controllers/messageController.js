@@ -1,21 +1,20 @@
-const Message = require("../Models/messageModel");
-const User = require("../Models/userModel");
-const Chat = require("../Models/chatModel");
-const { response } = require("express");
+import Message from "../Models/messageModel.js";
+import User from "../Models/userModel.js";
+import Chat from "../Models/chatModel.js";
 
-exports.sendMessage = async (req, res) => {
+export const sendMessage = async (req, res) => {
   const { content, chatId } = req.body;
   if (!content || !chatId)
     res.status(400).json({ error: "Please enter all required fields" });
 
-  var newMessage = {
+  const newMessage = {
     sender: req.user._id,
     content: content,
     chat: chatId,
   };
 
   try {
-    var message = await Message.create(newMessage);
+    let message = await Message.create(newMessage);
     message = await message.populate("sender", "name pic");
     message = await message.populate("chat");
     message = await User.populate(message, {
@@ -32,7 +31,7 @@ exports.sendMessage = async (req, res) => {
   }
 };
 
-exports.allMessages = async (req, res) => {
+export const allMessages = async (req, res) => {
   try {
     const messages = await Message.find({ chat: req.params.id })
       .populate("sender", "name pic email")

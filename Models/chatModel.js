@@ -1,6 +1,6 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
-const chatSchema = mongoose.Schema(
+const chatSchema = new mongoose.Schema(
   {
     chatName: {
       type: String,
@@ -30,4 +30,6 @@ const chatSchema = mongoose.Schema(
   }
 );
 
-module.exports = Chat = mongoose.model("Chat", chatSchema);
+const Chat = mongoose.model("Chat", chatSchema);
+
+export default Chat;

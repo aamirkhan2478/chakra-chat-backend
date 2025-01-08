@@ -1,7 +1,7 @@
-const Chat = require("../Models/chatModel");
-const User = require("../Models/userModel");
+import Chat from "../Models/chatModel.js";
+import User from "../Models/userModel.js";
 
-exports.accessChat = async (req, res) => {
+export const accessChat = async (req, res) => {
   const { userId } = req.body;
 
   if (!userId) {
@@ -10,7 +10,7 @@ exports.accessChat = async (req, res) => {
       .json({ error: "UserId params not sent with request!" });
   }
 
-  var isChat = await Chat.find({
+  let isChat = await Chat.find({
     isGroupChat: false,
     $and: [
       { users: { $elemMatch: { $eq: req.user._id } } },
@@ -48,7 +48,7 @@ exports.accessChat = async (req, res) => {
   }
 };
 
-exports.fetchChats = async (req, res) => {
+export const fetchChats = async (req, res) => {
   try {
     Chat.find({ users: { $elemMatch: { $eq: req.user._id } } })
       .populate("users", "-password")
@@ -68,12 +68,12 @@ exports.fetchChats = async (req, res) => {
   }
 };
 
-exports.createGroup = async (req, res) => {
+export const createGroup = async (req, res) => {
   if (!req.body.users || !req.body.name) {
     return res.status(400).send({ error: "Please fill in all the fields" });
   }
 
-  var users = JSON.parse(req.body.users);
+  const users = JSON.parse(req.body.users);
 
   if (users.length < 2) {
     return res
@@ -101,7 +101,7 @@ exports.createGroup = async (req, res) => {
   }
 };
 
-exports.renameGroup = async (req, res) => {
+export const renameGroup = async (req, res) => {
   const { chatId, chatName } = req.body;
   const updateChat = await Chat.findByIdAndUpdate(
     chatId,
@@ -118,7 +118,7 @@ exports.renameGroup = async (req, res) => {
   }
 };
 
-exports.addToGroup = async (req, res) => {
+export const addToGroup = async (req, res) => {
   const { chatId, userId } = req.body;
 
   const added = await Chat.findByIdAndUpdate(
@@ -136,7 +136,7 @@ exports.addToGroup = async (req, res) => {
   }
 };
 
-exports.removeFromGroup = async (req, res) => {
+export const removeFromGroup = async (req, res) => {
   const { chatId, userId } = req.body;
 
   const removed = await Chat.findByIdAndUpdate(

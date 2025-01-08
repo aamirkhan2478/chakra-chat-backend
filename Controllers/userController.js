@@ -1,7 +1,7 @@
-const bcrypt = require("bcryptjs");
-const User = require("../Models/userModel");
+import bcrypt from "bcryptjs";
+import User from "../Models/userModel.js";
 
-exports.signup = async (req, res) => {
+export const signup = async (req, res) => {
   const { name, email, password, pic } = req.body;
   if (!name || !email || !password) {
     res.status(400).json({ error: "Please enter all required fields" });
@@ -30,9 +30,9 @@ exports.signup = async (req, res) => {
   }
 
   try {
-    const eamilExist = await User.findOne({ email });
+    const emailExist = await User.findOne({ email });
 
-    if (eamilExist) {
+    if (emailExist) {
       res.status(400).json({ error: "User already exists" });
     } else {
       const user = new User({
@@ -53,7 +53,7 @@ exports.signup = async (req, res) => {
   }
 };
 
-exports.login = async (req, res) => {
+export const login = async (req, res) => {
   const { email, password } = req.body;
   if (!email || !password) {
     return res.status(400).json({ error: "Please fill all required fields" });
@@ -75,11 +75,11 @@ exports.login = async (req, res) => {
   }
 };
 
-exports.getUser = (req, res) => {
+export const getUser = (req, res) => {
   return res.send(req.user);
 };
 
-exports.getUsers = async (req, res) => {
+export const getUsers = async (req, res) => {
   const keyword = req.query.search
     ? {
         $or: [
