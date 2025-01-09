@@ -19,9 +19,7 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: process.env.CLIENT_URL,
-    methods: ["GET", "POST"],
-    credentials: true,
+    origin: "*",
   },
 });
 
@@ -32,10 +30,7 @@ app.use(express.urlencoded({ limit: "30mb", extended: true }));
 //Cors
 app.use(
   cors({
-    origin: process.env.CLIENT_URL,
-    credentials: true,
-    methods: ["GET", "POST"],
-    allowedHeaders: ["Content-Type", "x-auth-token"],
+    origin: "*",
   })
 );
 
